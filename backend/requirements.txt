@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+python-multipart
+numpy
+opencv-python-headless
+scikit-learn
+pandas
+fpdf2
+Pillow
+tf-keras <= 2.15
+tensorflow <= 2.15
+torch
+torchvision
+deepface
+anyio 
+fonttools 
+scipy 
