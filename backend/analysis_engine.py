@@ -27,17 +27,14 @@ BACKGROUND_MODEL_NAMES = ['resnet50', 'densenet121', 'vit', 'dino']
 DETECTION_IMAGE_MAX_SIZE = 320
 FEATURE_IMAGE_SIZE = 224
 
-# =============================================================================
-# 1. การตั้งค่าเกณฑ์มาตรฐาน (THRESHOLDS CONFIGURATION)
-#    อ้างอิงจากผลการทดลอง: Protocol A (Face) และ Protocol B (Background)
-# =============================================================================
+
 THRESHOLDS_CONFIG = {
-    # Protocol A: ใบหน้า (ใช้เกณฑ์ ArcFace สำหรับทุกโมเดล)
+    # Protocol A ใบหน้า (ใช้เกณฑ์ ArcFace สำหรับทุกโมเดล)
     "Face": {
         "default": {"cosine": 0.51, "pearson": 0.51}
     },
     
-    # Protocol B: ฉากหลัง (ใช้เกณฑ์ ResNet50 สำหรับทุกโมเดล)
+    # Protocol B ฉากหลัง (ใช้เกณฑ์ ResNet50 สำหรับทุกโมเดล)
     "Background": {
         "default": {"cosine": [0.68, 0.71], "pearson": [0.64, 0.67]}
     }
@@ -105,7 +102,7 @@ def compute_similarity(vec1, vec2):
          try:
              pearson_corr_raw, _ = pearsonr(vec1_flat, vec2_flat)
              if np.isnan(pearson_corr_raw): pearson_corr_norm = 0.0
-             else: pearson_corr_norm = pearson_corr_raw # ใช้ค่าดิบ (-1 ถึง 1) ตามการทดลองใหม่
+             else: pearson_corr_norm = pearson_corr_raw 
          except ValueError: 
              pearson_corr_norm = 0.0
     else:
@@ -144,9 +141,7 @@ def perform_sift_analysis(img1_orig, img2_orig, person_mask1, person_mask2, img1
         traceback.print_exc() 
         return {"matches": "Error", "visualization": None}
 
-# =============================================================================
-# 2. ปรับปรุง Logic การตัดสินใจ (Protocol A & B)
-# =============================================================================
+
 
 def get_face_group(cos_sim, pearson_corr, model_name="default"):
     """
@@ -176,19 +171,19 @@ def get_background_group(cos_sim, pearson_corr, model_name="default"):
     cos_low, cos_high = limits["cosine"]
     pear_low, pear_high = limits["pearson"]
     
-    # 1. โซนยอมรับ (Accept Zone)
+    # 1. โซนยอมรับ
     if cos_sim >= cos_high and pearson_corr >= pear_high:
         return "สถานที่เดียวกัน"
     
-    # 2. โซนปฏิเสธ (Reject Zone)
+    # 2. โซนปฏิเสธ
     elif cos_sim < cos_low or pearson_corr < pear_low:
         return "สถานที่ที่ไม่ถูกจัดกลุ่ม"
         
-    # 3. โซนกำกวม (Ambiguous Zone)
+    # 3. โซนกำกวม
     else:
         return "ไม่สามารถระบุได้" # ส่งต่อให้ SIFT
 
-# =============================================================================
+
 
 def calculate_average_scores(groups, pairwise_results):
     avg_scores = {}
@@ -520,7 +515,7 @@ def run_full_analysis(job_id, image_files, face_models_to_run, bg_models_to_run,
                 face_pairs = list(itertools.combinations(feature_filenames, 2))
                 for f1, f2 in face_pairs:
                     cos_sim, p_corr = compute_similarity(face_features[f1], face_features[f2])
-                    # [แก้ไข] ส่งชื่อโมเดลไปเพื่อดึงเกณฑ์เฉพาะ
+                    # ส่งชื่อโมเดลไปเพื่อดึงเกณฑ์เฉพาะ
                     group = get_face_group(cos_sim, p_corr, model_name=face_model_name)
                     face_pairwise.append({'pair': (f1, f2), 'cosine': cos_sim, 'pearson': p_corr, 'group': group})
 
@@ -547,7 +542,7 @@ def run_full_analysis(job_id, image_files, face_models_to_run, bg_models_to_run,
                 bg_pairs = list(itertools.combinations(feature_filenames, 2))
                 for f1, f2 in bg_pairs:
                     cos_sim, p_corr = compute_similarity(bg_features[f1], bg_features[f2])
-                    # [แก้ไข] ส่งชื่อโมเดลไปเพื่อดึงเกณฑ์เฉพาะ
+                    # ส่งชื่อโมเดลไปเพื่อดึงเกณฑ์เฉพาะ
                     group = get_background_group(cos_sim, p_corr, model_name=bg_model_name)
                     bg_pairwise.append({'pair': (f1, f2), 'cosine': cos_sim, 'pearson': p_corr, 'group': group, 'sift': None})
 
