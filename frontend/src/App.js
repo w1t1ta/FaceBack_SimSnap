@@ -51,7 +51,7 @@ const AppContent = () => {
             </main>
 
             <footer className="bg-white text-center text-sm text-gray-500 p-4 mt-8 border-t">
-                © 2024 FaceBack SimSnap. All Rights Reserved.
+                © 2025 FaceBack SimSnap. All Rights Reserved. Create by Tonliew Witita.
             </footer>
         </div>
     );
