@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const API_URL = "http://localhost:8888";
+const API_URL = "http://localhost:8000";
 
 const SiftVisualization = ({ members, modelData }) => {
     if (!modelData.sift_visualizations || members.length < 2) return null;

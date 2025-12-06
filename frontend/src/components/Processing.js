@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Results from './Results';
 
-const API_URL = "http://localhost:8888";
+const API_URL = "http://localhost:8000";
 
 const funFacts = [
     "เคล็ดลับ: ภาพที่มีแสงสว่างดีและเห็นใบหน้าชัดเจนให้ผลลัพธ์ที่ดีที่สุด",

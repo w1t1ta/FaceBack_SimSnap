@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const API_URL = "http://localhost:8888";
+const API_URL = "http://localhost:8000";
 
 const CustomDropdown = ({ label, options, selectedValue, onValueChange }) => {
     const [isOpen, setIsOpen] = useState(false);
