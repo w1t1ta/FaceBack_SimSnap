@@ -1,3 +1,8 @@
+<img width="616" height="616" alt="Image" src="https://github.com/user-attachments/assets/f6d7cbf1-3b1b-4e91-ae16-6c9dbd7d059d" />
+
+
+
+
 **โครงสร้างไฟล์และการทำงานที่สำคัญ**
 FACEBACK_SIMSNAP/
 │
